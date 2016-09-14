@@ -1,2 +1,3 @@
-# bluemvc-twig
-Twig view renderer for the BlueMvc PHP framework
+# BlueMvc Twig
+
+This project is under construction and is not yet complete. Please check back later.
