@@ -18,6 +18,16 @@ use DataTypes\Interfaces\FilePathInterface;
 class TwigViewRenderer extends AbstractViewRenderer
 {
     /**
+     * Constructs the Twig view renderer.
+     *
+     * @since 1.0.0
+     */
+    public function __construct()
+    {
+        parent::__construct('twig');
+    }
+
+    /**
      * Renders the view.
      *
      * @since 1.0.0
