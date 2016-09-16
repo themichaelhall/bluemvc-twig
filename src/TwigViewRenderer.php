@@ -35,10 +35,11 @@ class TwigViewRenderer extends AbstractViewRenderer
      * @param FilePathInterface $viewsDirectory The views directory.
      * @param FilePathInterface $viewFile       The view file.
      * @param mixed|null        $model          The model or null if there is no model.
+     * @param mixed             $viewData       The view data or null if there is no view data.
      *
      * @return string The rendered view.
      */
-    public function renderView(FilePathInterface $viewsDirectory, FilePathInterface $viewFile, $model = null)
+    public function renderView(FilePathInterface $viewsDirectory, FilePathInterface $viewFile, $model = null, $viewData = null)
     {
         // Figure out the cache directory path by temp dir and present views directory.
         $cachePath = FilePath::tryParse(
@@ -58,7 +59,8 @@ class TwigViewRenderer extends AbstractViewRenderer
 
         return $twigTemplate->render(
             [
-                'Model' => $model !== null ? $model : [],
+                'Model'    => $model !== null ? $model : [],
+                'ViewData' => $viewData !== null ? $viewData : [],
             ]
         );
     }

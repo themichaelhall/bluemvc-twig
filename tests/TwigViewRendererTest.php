@@ -19,7 +19,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
             FilePath::parse('basic.twig')
         );
 
-        $this->assertSame('<html><body><h1></h1><p></p></body></html>', $result);
+        $this->assertSame('<html><head><title></title></head><body><h1></h1><p></p></body></html>', $result);
     }
 
     /**
@@ -37,6 +37,27 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->assertSame('<html><body><h1>The header</h1><p>The content</p></body></html>', $result);
+        $this->assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
+    }
+
+    /**
+     * Test the renderView method with model and view data.
+     */
+    public function testRenderViewWithModelAndViewData()
+    {
+        $viewRenderer = new TwigViewRenderer();
+        $result = $viewRenderer->renderView(
+            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            FilePath::parse('basic.twig'),
+            [
+                'Header'  => 'The header',
+                'Content' => 'The content',
+            ],
+            [
+                'Title' => 'The title',
+            ]
+        );
+
+        $this->assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
     }
 }
