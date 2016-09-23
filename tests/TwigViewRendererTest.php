@@ -1,5 +1,6 @@
 <?php
 
+use BlueMvc\Fakes\FakeApplication;
 use BlueMvc\Twig\TwigViewRenderer;
 use DataTypes\FilePath;
 
@@ -15,6 +16,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
     {
         $viewRenderer = new TwigViewRenderer();
         $result = $viewRenderer->renderView(
+            new FakeApplication(),
             FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
             FilePath::parse('basic.twig')
         );
@@ -29,6 +31,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
     {
         $viewRenderer = new TwigViewRenderer();
         $result = $viewRenderer->renderView(
+            new FakeApplication(),
             FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
             FilePath::parse('basic.twig'),
             [
@@ -47,6 +50,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
     {
         $viewRenderer = new TwigViewRenderer();
         $result = $viewRenderer->renderView(
+            new FakeApplication(),
             FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
             FilePath::parse('basic.twig'),
             [
