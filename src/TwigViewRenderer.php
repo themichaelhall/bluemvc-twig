@@ -26,6 +26,11 @@ class TwigViewRenderer extends AbstractViewRenderer
     public function __construct()
     {
         parent::__construct('twig');
+
+        $this->myTwigLoader = new \Twig_Loader_Filesystem();
+        $this->myTwigEnvironment = new \Twig_Environment($this->myTwigLoader, [
+            'auto_reload' => true,
+        ]);
     }
 
     /**
@@ -43,17 +48,17 @@ class TwigViewRenderer extends AbstractViewRenderer
      */
     public function renderView(ApplicationInterface $application, FilePathInterface $viewsDirectory, FilePathInterface $viewFile, $model = null, $viewData = null)
     {
+        // Set views directory path.
+        $this->myTwigLoader->setPaths($viewsDirectory->__toString());
+
+        // Set cache path.
         $cachePath = $application->getTempPath()->withFilePath(
             FilePath::parse('bluemvc-twig' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR)
         );
+        $this->myTwigEnvironment->setCache($cachePath->__toString());
 
-        // Setup and render with Twig.
-        $twigLoader = new \Twig_Loader_Filesystem($viewsDirectory->__toString());
-        $twigEnvironment = new \Twig_Environment($twigLoader, [
-            'cache'       => $cachePath->__toString(),
-            'auto_reload' => true,
-        ]);
-        $twigTemplate = $twigEnvironment->loadTemplate($viewFile->__toString());
+        // Create and render template.
+        $twigTemplate = $this->myTwigEnvironment->load($viewFile->__toString());
 
         return $twigTemplate->render(
             [
@@ -62,4 +67,14 @@ class TwigViewRenderer extends AbstractViewRenderer
             ]
         );
     }
+
+    /**
+     * @var \Twig_Loader_Filesystem My Twig loader.
+     */
+    private $myTwigLoader;
+
+    /**
+     * @var \Twig_Environment My Twig environment.
+     */
+    private $myTwigEnvironment;
 }
