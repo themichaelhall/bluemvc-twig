@@ -64,4 +64,14 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
     }
+
+    /**
+     * Test getTwigLoader method.
+     */
+    public function testGetTwigLoader()
+    {
+        $viewRenderer = new TwigViewRenderer();
+
+        $this->assertInstanceOf(\Twig_Loader_Filesystem::class, $viewRenderer->getTwigLoader());
+    }
 }

@@ -34,6 +34,18 @@ class TwigViewRenderer extends AbstractViewRenderer
     }
 
     /**
+     * Returns the Twig loader.
+     *
+     * @since 1.0.0
+     *
+     * @return \Twig_Loader_Filesystem The Twig loader.
+     */
+    public function getTwigLoader()
+    {
+        return $this->myTwigLoader;
+    }
+
+    /**
      * Renders the view.
      *
      * @since 1.0.0
