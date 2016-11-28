@@ -74,4 +74,14 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(\Twig_Loader_Filesystem::class, $viewRenderer->getTwigLoader());
     }
+
+    /**
+     * Test getTwigEnvironment method.
+     */
+    public function testGetTwigEnvironment()
+    {
+        $viewRenderer = new TwigViewRenderer();
+
+        $this->assertInstanceOf(\Twig_Environment::class, $viewRenderer->getTwigEnvironment());
+    }
 }

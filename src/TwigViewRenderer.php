@@ -34,6 +34,18 @@ class TwigViewRenderer extends AbstractViewRenderer
     }
 
     /**
+     * Returns the Twig environment.
+     *
+     * @since 1.0.0
+     *
+     * @return \Twig_Environment The Twig environment.
+     */
+    public function getTwigEnvironment()
+    {
+        return $this->myTwigEnvironment;
+    }
+
+    /**
      * Returns the Twig loader.
      *
      * @since 1.0.0
