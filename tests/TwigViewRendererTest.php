@@ -84,4 +84,26 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(\Twig_Environment::class, $viewRenderer->getTwigEnvironment());
     }
+
+    /**
+     * Test render a view using a custom Twig extension.
+     */
+    public function testRenderViewWithCustomTwigExtension()
+    {
+        $viewRenderer = new TwigViewRenderer();
+
+        $twigEnvironment = $viewRenderer->getTwigEnvironment();
+        $twigEnvironment->addFilter(new \Twig_SimpleFilter('FooBar', function ($s) {
+            return strtoupper($s);
+        }));
+
+        $result = $viewRenderer->renderView(
+            new FakeApplication(),
+            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            FilePath::parse('extension.twig'),
+            'Baz'
+        );
+
+        $this->assertSame('<html><head><title></title></head><body><p>BAZ</p></body></html>', $result);
+    }
 }
