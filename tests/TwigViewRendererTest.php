@@ -106,4 +106,41 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('<html><head><title></title></head><body><p>BAZ</p></body></html>', $result);
     }
+
+    /**
+     * Test get the Twig cache directory.
+     */
+    public function testGetTwigCacheDirectory()
+    {
+        $application = new FakeApplication();
+        $viewRenderer = new TwigViewRenderer();
+        $twigEnvironment = $viewRenderer->getTwigEnvironment();
+
+        $viewRenderer->renderView(
+            $application,
+            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            FilePath::parse('basic.twig')
+        );
+
+        $this->assertSame($application->getTempPath()->withFilePath(FilePath::parse('bluemvc-twig' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR))->__toString(), $twigEnvironment->getCache());
+    }
+
+    /**
+     * Test that the an existing Twig cache directory does not change after View rendering.
+     */
+    public function testExistingTwigCacheDirectoryDoesNotChangeAfterViewRendering()
+    {
+        $application = new FakeApplication();
+        $viewRenderer = new TwigViewRenderer();
+        $twigEnvironment = $viewRenderer->getTwigEnvironment();
+        $twigEnvironment->setCache(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'twig-test' . DIRECTORY_SEPARATOR);
+
+        $viewRenderer->renderView(
+            $application,
+            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            FilePath::parse('basic.twig')
+        );
+
+        $this->assertSame(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'twig-test' . DIRECTORY_SEPARATOR, $twigEnvironment->getCache());
+    }
 }

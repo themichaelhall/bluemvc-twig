@@ -75,11 +75,14 @@ class TwigViewRenderer extends AbstractViewRenderer
         // Set views directory path.
         $this->myTwigLoader->setPaths($viewsDirectory->__toString());
 
-        // Set cache path.
-        $cachePath = $application->getTempPath()->withFilePath(
-            FilePath::parse('bluemvc-twig' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR)
-        );
-        $this->myTwigEnvironment->setCache($cachePath->__toString());
+        // Set cache path if not set yet.
+        if ($this->myTwigEnvironment->getCache() === false) {
+            $cachePath = $application->getTempPath()->withFilePath(
+                FilePath::parse('bluemvc-twig' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR)
+            );
+
+            $this->myTwigEnvironment->setCache($cachePath->__toString());
+        }
 
         // Create and render template.
         $twigTemplate = $this->myTwigEnvironment->load($viewFile->__toString());
