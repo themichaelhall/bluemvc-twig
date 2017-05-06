@@ -4,6 +4,7 @@
  *
  * Read more at https://bluemvc.com/
  */
+
 namespace BlueMvc\Twig;
 
 use BlueMvc\Core\Base\AbstractViewRenderer;
