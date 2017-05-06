@@ -1,5 +1,7 @@
 <?php
 
+namespace BlueMvc\Twig\Tests;
+
 use BlueMvc\Fakes\FakeApplication;
 use BlueMvc\Twig\TwigViewRenderer;
 use DataTypes\FilePath;
@@ -7,7 +9,7 @@ use DataTypes\FilePath;
 /**
  * Test TwigViewRenderer class.
  */
-class TwigViewRendererTest extends PHPUnit_Framework_TestCase
+class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test the renderView method with empty model.
@@ -21,7 +23,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
             FilePath::parse('basic.twig')
         );
 
-        $this->assertSame('<html><head><title></title></head><body><h1></h1><p></p></body></html>', $result);
+        self::assertSame('<html><head><title></title></head><body><h1></h1><p></p></body></html>', $result);
     }
 
     /**
@@ -40,7 +42,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
+        self::assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
     }
 
     /**
@@ -62,7 +64,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
+        self::assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
     }
 
     /**
@@ -72,7 +74,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
     {
         $viewRenderer = new TwigViewRenderer();
 
-        $this->assertInstanceOf(\Twig_Loader_Filesystem::class, $viewRenderer->getTwigLoader());
+        self::assertInstanceOf(\Twig_Loader_Filesystem::class, $viewRenderer->getTwigLoader());
     }
 
     /**
@@ -82,7 +84,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
     {
         $viewRenderer = new TwigViewRenderer();
 
-        $this->assertInstanceOf(\Twig_Environment::class, $viewRenderer->getTwigEnvironment());
+        self::assertInstanceOf(\Twig_Environment::class, $viewRenderer->getTwigEnvironment());
     }
 
     /**
@@ -104,7 +106,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
             'Baz'
         );
 
-        $this->assertSame('<html><head><title></title></head><body><p>BAZ</p></body></html>', $result);
+        self::assertSame('<html><head><title></title></head><body><p>BAZ</p></body></html>', $result);
     }
 
     /**
@@ -122,7 +124,7 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
             FilePath::parse('basic.twig')
         );
 
-        $this->assertSame($application->getTempPath()->withFilePath(FilePath::parse('bluemvc-twig' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR))->__toString(), $twigEnvironment->getCache());
+        self::assertSame($application->getTempPath()->withFilePath(FilePath::parse('bluemvc-twig' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR))->__toString(), $twigEnvironment->getCache());
     }
 
     /**
@@ -141,6 +143,6 @@ class TwigViewRendererTest extends PHPUnit_Framework_TestCase
             FilePath::parse('basic.twig')
         );
 
-        $this->assertSame(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'twig-test' . DIRECTORY_SEPARATOR, $twigEnvironment->getCache());
+        self::assertSame(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'twig-test' . DIRECTORY_SEPARATOR, $twigEnvironment->getCache());
     }
 }

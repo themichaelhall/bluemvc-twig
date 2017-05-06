@@ -24,11 +24,16 @@
   },
   "require-dev": {
     "bluemvc/bluemvc-fakes": "dev-master",
-    "phpunit/phpunit": ">=4.0"
+    "phpunit/phpunit": "~5.0"
   },
   "autoload": {
     "psr-4": {
       "BlueMvc\\Twig\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BlueMvc\\Twig\\Tests\\": "tests"
     }
   },
   "minimum-stability": "dev",
