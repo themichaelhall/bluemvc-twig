@@ -9,6 +9,7 @@ namespace BlueMvc\Twig;
 
 use BlueMvc\Core\Base\AbstractViewRenderer;
 use BlueMvc\Core\Interfaces\ApplicationInterface;
+use BlueMvc\Core\Interfaces\RequestInterface;
 use DataTypes\FilePath;
 use DataTypes\Interfaces\FilePathInterface;
 
@@ -61,20 +62,20 @@ class TwigViewRenderer extends AbstractViewRenderer
     /**
      * Renders the view.
      *
-     * @since 1.0.0
+     * @since    1.0.0
      *
-     * @param ApplicationInterface $application    The application.
-     * @param FilePathInterface    $viewsDirectory The views directory.
-     * @param FilePathInterface    $viewFile       The view file.
-     * @param mixed|null           $model          The model or null if there is no model.
-     * @param mixed                $viewData       The view data or null if there is no view data.
+     * @param ApplicationInterface $application The application.
+     * @param RequestInterface     $request     The request.
+     * @param FilePathInterface    $viewFile    The view file.
+     * @param mixed|null           $model       The model or null if there is no model.
+     * @param mixed                $viewData    The view data or null if there is no view data.
      *
      * @return string The rendered view.
      */
-    public function renderView(ApplicationInterface $application, FilePathInterface $viewsDirectory, FilePathInterface $viewFile, $model = null, $viewData = null)
+    public function renderView(ApplicationInterface $application, RequestInterface $request, FilePathInterface $viewFile, $model = null, $viewData = null)
     {
         // Set views directory path.
-        $this->myTwigLoader->setPaths($viewsDirectory->__toString());
+        $this->myTwigLoader->setPaths($application->getViewPath()->__toString());
 
         // Set cache path if not set yet.
         if ($this->myTwigEnvironment->getCache() === false) {
@@ -90,8 +91,10 @@ class TwigViewRenderer extends AbstractViewRenderer
 
         return $twigTemplate->render(
             [
-                'Model'    => $model !== null ? $model : [],
-                'ViewData' => $viewData !== null ? $viewData : [],
+                'Model'       => $model !== null ? $model : [],
+                'ViewData'    => $viewData !== null ? $viewData : [],
+                'Request'     => $request,
+                'Application' => $application,
             ]
         );
     }

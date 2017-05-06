@@ -3,6 +3,7 @@
 namespace BlueMvc\Twig\Tests;
 
 use BlueMvc\Fakes\FakeApplication;
+use BlueMvc\Fakes\FakeRequest;
 use BlueMvc\Twig\TwigViewRenderer;
 use DataTypes\FilePath;
 
@@ -16,14 +17,16 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderViewWithEmptyModel()
     {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
         $result = $viewRenderer->renderView(
-            new FakeApplication(),
-            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            $application,
+            new FakeRequest('/foo'),
             FilePath::parse('basic.twig')
         );
 
-        self::assertSame('<html><head><title></title></head><body><h1></h1><p></p></body></html>', $result);
+        self::assertSame('<html><head><title></title></head><body><h1></h1><p></p><p>http://localhost/foo</p><p>' . $application->getViewPath() . '</p></body></html>', $result);
     }
 
     /**
@@ -31,10 +34,12 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderViewWithModel()
     {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
         $result = $viewRenderer->renderView(
-            new FakeApplication(),
-            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            $application,
+            new FakeRequest('/bar'),
             FilePath::parse('basic.twig'),
             [
                 'Header'  => 'The header',
@@ -42,7 +47,7 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        self::assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
+        self::assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/bar</p><p>' . $application->getViewPath() . '</p></body></html>', $result);
     }
 
     /**
@@ -50,10 +55,12 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderViewWithModelAndViewData()
     {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
         $result = $viewRenderer->renderView(
-            new FakeApplication(),
-            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            $application,
+            new FakeRequest(),
             FilePath::parse('basic.twig'),
             [
                 'Header'  => 'The header',
@@ -64,7 +71,7 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        self::assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p></body></html>', $result);
+        self::assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/</p><p>' . $application->getViewPath() . '</p></body></html>', $result);
     }
 
     /**
@@ -92,6 +99,8 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderViewWithCustomTwigExtension()
     {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
 
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
@@ -100,8 +109,8 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
         }));
 
         $result = $viewRenderer->renderView(
-            new FakeApplication(),
-            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            $application,
+            new FakeRequest(),
             FilePath::parse('extension.twig'),
             'Baz'
         );
@@ -115,12 +124,13 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
     public function testGetTwigCacheDirectory()
     {
         $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
 
         $viewRenderer->renderView(
             $application,
-            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            new FakeRequest(),
             FilePath::parse('basic.twig')
         );
 
@@ -133,13 +143,14 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
     public function testExistingTwigCacheDirectoryDoesNotChangeAfterViewRendering()
     {
         $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
         $twigEnvironment->setCache(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'twig-test' . DIRECTORY_SEPARATOR);
 
         $viewRenderer->renderView(
             $application,
-            FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR),
+            new FakeRequest(),
             FilePath::parse('basic.twig')
         );
 
