@@ -2,6 +2,7 @@
 
 namespace BlueMvc\Twig\Tests;
 
+use BlueMvc\Core\Collections\ViewItemCollection;
 use BlueMvc\Fakes\FakeApplication;
 use BlueMvc\Fakes\FakeRequest;
 use BlueMvc\Twig\TwigViewRenderer;
@@ -58,6 +59,8 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
         $application = new FakeApplication();
         $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
+        $viewItems = new ViewItemCollection();
+        $viewItems->set('Title', 'The title');
         $result = $viewRenderer->renderView(
             $application,
             new FakeRequest(),
@@ -66,9 +69,7 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
                 'Header'  => 'The header',
                 'Content' => 'The content',
             ],
-            [
-                'Title' => 'The title',
-            ]
+            $viewItems
         );
 
         self::assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/</p><p>' . $application->getViewPath() . '</p></body></html>', $result);

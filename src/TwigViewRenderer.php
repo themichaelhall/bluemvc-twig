@@ -9,6 +9,7 @@ namespace BlueMvc\Twig;
 
 use BlueMvc\Core\Base\AbstractViewRenderer;
 use BlueMvc\Core\Interfaces\ApplicationInterface;
+use BlueMvc\Core\Interfaces\Collections\ViewItemCollectionInterface;
 use BlueMvc\Core\Interfaces\RequestInterface;
 use DataTypes\FilePath;
 use DataTypes\Interfaces\FilePathInterface;
@@ -64,15 +65,15 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @since    1.0.0
      *
-     * @param ApplicationInterface $application The application.
-     * @param RequestInterface     $request     The request.
-     * @param FilePathInterface    $viewFile    The view file.
-     * @param mixed|null           $model       The model or null if there is no model.
-     * @param mixed                $viewData    The view data or null if there is no view data.
+     * @param ApplicationInterface        $application The application.
+     * @param RequestInterface            $request     The request.
+     * @param FilePathInterface           $viewFile    The view file.
+     * @param mixed|null                  $model       The model or null if there is no model.
+     * @param ViewItemCollectionInterface $viewItems   The view items or null if there is no view items.
      *
      * @return string The rendered view.
      */
-    public function renderView(ApplicationInterface $application, RequestInterface $request, FilePathInterface $viewFile, $model = null, $viewData = null)
+    public function renderView(ApplicationInterface $application, RequestInterface $request, FilePathInterface $viewFile, $model = null, ViewItemCollectionInterface $viewItems = null)
     {
         // Set views directory path.
         $this->myTwigLoader->setPaths($application->getViewPath()->__toString());
@@ -92,7 +93,7 @@ class TwigViewRenderer extends AbstractViewRenderer
         return $twigTemplate->render(
             [
                 'Model'       => $model !== null ? $model : [],
-                'ViewData'    => $viewData !== null ? $viewData : [],
+                'ViewItems'   => $viewItems !== null ? iterator_to_array($viewItems) : [],
                 'Request'     => $request,
                 'Application' => $application,
             ]
