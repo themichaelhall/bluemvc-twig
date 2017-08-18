@@ -157,4 +157,24 @@ class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
 
         self::assertSame(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'twig-test' . DIRECTORY_SEPARATOR, $twigEnvironment->getCache());
     }
+
+    /**
+     * Test get default view file extension.
+     */
+    public function testGetDefaultViewFileExtension()
+    {
+        $viewRenderer = new TwigViewRenderer();
+
+        self::assertSame('twig', $viewRenderer->getViewFileExtension());
+    }
+
+    /**
+     * Test set view file extension.
+     */
+    public function testSetViewFileExtension()
+    {
+        $viewRenderer = new TwigViewRenderer('html.tpl');
+
+        self::assertSame('html.tpl', $viewRenderer->getViewFileExtension());
+    }
 }

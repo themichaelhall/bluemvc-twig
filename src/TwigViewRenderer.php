@@ -25,10 +25,12 @@ class TwigViewRenderer extends AbstractViewRenderer
      * Constructs the Twig view renderer.
      *
      * @since 1.0.0
+     *
+     * @param string $viewFileExtension The view file extension.
      */
-    public function __construct()
+    public function __construct($viewFileExtension = 'twig')
     {
-        parent::__construct('twig');
+        parent::__construct($viewFileExtension);
 
         $this->myTwigLoader = new \Twig_Loader_Filesystem();
         $this->myTwigEnvironment = new \Twig_Environment($this->myTwigLoader, [
