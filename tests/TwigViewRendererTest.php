@@ -7,11 +7,12 @@ use BlueMvc\Fakes\FakeApplication;
 use BlueMvc\Fakes\FakeRequest;
 use BlueMvc\Twig\TwigViewRenderer;
 use DataTypes\FilePath;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test TwigViewRenderer class.
  */
-class TwigViewRendererTest extends \PHPUnit_Framework_TestCase
+class TwigViewRendererTest extends TestCase
 {
     /**
      * Test the renderView method with empty model.
