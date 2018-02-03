@@ -19,11 +19,11 @@
   "require": {
     "php": ">=5.6",
     "datatypes/datatypes": "~1.0||~2.0",
-    "bluemvc/bluemvc-core": "dev-master",
+    "bluemvc/bluemvc-core": "~1.0",
     "twig/twig": "~1.28||~2.0"
   },
   "require-dev": {
-    "bluemvc/bluemvc-fakes": "dev-master",
+    "bluemvc/bluemvc-fakes": "~1.0",
     "phpunit/phpunit": "~5.5||~6.0"
   },
   "autoload": {
@@ -35,7 +35,5 @@
     "psr-4": {
       "BlueMvc\\Twig\\Tests\\": "tests"
     }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  }
 }
