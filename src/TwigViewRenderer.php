@@ -103,6 +103,30 @@ class TwigViewRenderer extends AbstractViewRenderer
     }
 
     /**
+     * Sets whether strict variables should be enabled.
+     *
+     * @since 1.1.0
+     *
+     * @param bool $isEnabled True if strict variables should be enabled, false otherwise.
+     *
+     * @return self The Twig view renderer.
+     */
+    public function setStrictVariables($isEnabled = true)
+    {
+        if (!is_bool($isEnabled)) {
+            throw new \InvalidArgumentException('$isEnabled parameter is not a boolean.');
+        }
+
+        if ($isEnabled) {
+            $this->myTwigEnvironment->enableStrictVariables();
+        } else {
+            $this->myTwigEnvironment->disableStrictVariables();
+        }
+
+        return $this;
+    }
+
+    /**
      * @var \Twig_Loader_Filesystem My Twig loader.
      */
     private $myTwigLoader;
