@@ -178,4 +178,36 @@ class TwigViewRendererTest extends TestCase
 
         self::assertSame('html.tpl', $viewRenderer->getViewFileExtension());
     }
+
+    /**
+     * Test enable strict variables.
+     */
+    public function testEnableStrictVariables()
+    {
+        $viewRenderer = (new TwigViewRenderer())->setStrictVariables(true);
+
+        self::assertTrue($viewRenderer->getTwigEnvironment()->isStrictVariables());
+    }
+
+    /**
+     * Test disable strict variables.
+     */
+    public function testDisableStrictVariables()
+    {
+        $viewRenderer = (new TwigViewRenderer())->setStrictVariables(false);
+
+        self::assertFalse($viewRenderer->getTwigEnvironment()->isStrictVariables());
+    }
+
+    /**
+     * Test calling setStrictVariables method with invalid parameter type.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $isEnabled parameter is not a boolean.
+     */
+    public function testSetStrictVariablesWithInvalidParameterType()
+    {
+        $viewRenderer = new TwigViewRenderer();
+        $viewRenderer->setStrictVariables(10);
+    }
 }
