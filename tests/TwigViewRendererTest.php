@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BlueMvc\Twig\Tests;
 
 use BlueMvc\Core\Collections\ViewItemCollection;
@@ -197,17 +199,5 @@ class TwigViewRendererTest extends TestCase
         $viewRenderer = (new TwigViewRenderer())->setStrictVariables(false);
 
         self::assertFalse($viewRenderer->getTwigEnvironment()->isStrictVariables());
-    }
-
-    /**
-     * Test calling setStrictVariables method with invalid parameter type.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $isEnabled parameter is not a boolean.
-     */
-    public function testSetStrictVariablesWithInvalidParameterType()
-    {
-        $viewRenderer = new TwigViewRenderer();
-        $viewRenderer->setStrictVariables(10);
     }
 }
