@@ -78,10 +78,12 @@ class TwigViewRenderer extends AbstractViewRenderer
      */
     public function renderView(ApplicationInterface $application, RequestInterface $request, FilePathInterface $viewFile, $model = null, ?ViewItemCollectionInterface $viewItems = null): string
     {
-        // Set views directory path.
-        $this->twigLoader->setPaths($application->getViewPath()->__toString());
+        // Set views directory path if not set.
+        if ($this->twigLoader->getPaths() === []) {
+            $this->twigLoader->setPaths($application->getViewPath()->__toString());
+        }
 
-        // Set cache path if not set yet.
+        // Set cache path if not set.
         if ($this->twigEnvironment->getCache() === false) {
             $cachePath = $application->getTempPath()->withFilePath(
                 FilePath::parse('bluemvc-twig' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR)
