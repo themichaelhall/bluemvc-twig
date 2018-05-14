@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BlueMvc\Twig\Tests;
 
 use BlueMvc\Core\Collections\ViewItemCollection;
@@ -200,14 +202,85 @@ class TwigViewRendererTest extends TestCase
     }
 
     /**
-     * Test calling setStrictVariables method with invalid parameter type.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $isEnabled parameter is not a boolean.
+     * Test that paths are set by default.
      */
-    public function testSetStrictVariablesWithInvalidParameterType()
+    public function testPathsAreSetByDefault()
     {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
-        $viewRenderer->setStrictVariables(10);
+        $viewRenderer->renderView(
+            $application,
+            new FakeRequest(),
+            FilePath::parse('basic.twig')
+        );
+
+        self::assertSame([__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'], $viewRenderer->getTwigLoader()->getPaths());
+    }
+
+    /**
+     * Test that paths are not changed if set.
+     */
+    public function testPathsAreNotChangedIfSet()
+    {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $viewRenderer = new TwigViewRenderer();
+        $viewRenderer->getTwigLoader()->setPaths(
+            [
+                __DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViewsAlternate',
+                __DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews',
+            ]
+        );
+
+        $viewRenderer->renderView(
+            $application,
+            new FakeRequest(),
+            FilePath::parse('basic.twig')
+        );
+
+        self::assertSame([__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViewsAlternate', __DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'], $viewRenderer->getTwigLoader()->getPaths());
+    }
+
+    /**
+     * Test render a view with an included file from base directory.
+     */
+    public function testRenderViewWithIncludedFileFromBaseDirectory()
+    {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $viewRenderer = new TwigViewRenderer();
+
+        $result = $viewRenderer->renderView(
+            $application,
+            new FakeRequest(),
+            FilePath::parse('with-include.twig')
+        );
+
+        self::assertSame('<html><head><title></title></head><body><p>Included from base directory</p></body></html>', $result);
+    }
+
+    /**
+     * Test render a view with an included file from alternate directory.
+     */
+    public function testRenderViewWithIncludedFileFromAlternateDirectory()
+    {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $viewRenderer = new TwigViewRenderer();
+        $viewRenderer->getTwigLoader()->setPaths(
+            [
+                __DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViewsAlternate' . DIRECTORY_SEPARATOR,
+                __DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR,
+            ]
+        );
+
+        $result = $viewRenderer->renderView(
+            $application,
+            new FakeRequest(),
+            FilePath::parse('with-include.twig')
+        );
+
+        self::assertSame('<html><head><title></title></head><body><p>Included from alternate directory</p></body></html>', $result);
     }
 }

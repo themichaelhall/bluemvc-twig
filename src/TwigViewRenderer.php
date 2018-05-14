@@ -4,6 +4,7 @@
  *
  * Read more at https://bluemvc.com/
  */
+declare(strict_types=1);
 
 namespace BlueMvc\Twig;
 
@@ -28,12 +29,12 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @param string $viewFileExtension The view file extension.
      */
-    public function __construct($viewFileExtension = 'twig')
+    public function __construct(string $viewFileExtension = 'twig')
     {
         parent::__construct($viewFileExtension);
 
-        $this->myTwigLoader = new \Twig_Loader_Filesystem();
-        $this->myTwigEnvironment = new \Twig_Environment($this->myTwigLoader, [
+        $this->twigLoader = new \Twig_Loader_Filesystem();
+        $this->twigEnvironment = new \Twig_Environment($this->twigLoader, [
             'auto_reload' => true,
         ]);
     }
@@ -45,9 +46,9 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @return \Twig_Environment The Twig environment.
      */
-    public function getTwigEnvironment()
+    public function getTwigEnvironment(): \Twig_Environment
     {
-        return $this->myTwigEnvironment;
+        return $this->twigEnvironment;
     }
 
     /**
@@ -57,9 +58,9 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @return \Twig_Loader_Filesystem The Twig loader.
      */
-    public function getTwigLoader()
+    public function getTwigLoader(): \Twig_Loader_Filesystem
     {
-        return $this->myTwigLoader;
+        return $this->twigLoader;
     }
 
     /**
@@ -67,30 +68,32 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @since    1.0.0
      *
-     * @param ApplicationInterface        $application The application.
-     * @param RequestInterface            $request     The request.
-     * @param FilePathInterface           $viewFile    The view file.
-     * @param mixed|null                  $model       The model or null if there is no model.
-     * @param ViewItemCollectionInterface $viewItems   The view items or null if there is no view items.
+     * @param ApplicationInterface             $application The application.
+     * @param RequestInterface                 $request     The request.
+     * @param FilePathInterface                $viewFile    The view file.
+     * @param mixed|null                       $model       The model or null if there is no model.
+     * @param ViewItemCollectionInterface|null $viewItems   The view items or null if there is no view items.
      *
      * @return string The rendered view.
      */
-    public function renderView(ApplicationInterface $application, RequestInterface $request, FilePathInterface $viewFile, $model = null, ViewItemCollectionInterface $viewItems = null)
+    public function renderView(ApplicationInterface $application, RequestInterface $request, FilePathInterface $viewFile, $model = null, ?ViewItemCollectionInterface $viewItems = null): string
     {
-        // Set views directory path.
-        $this->myTwigLoader->setPaths($application->getViewPath()->__toString());
+        // Set views directory path if not set.
+        if ($this->twigLoader->getPaths() === []) {
+            $this->twigLoader->setPaths($application->getViewPath()->__toString());
+        }
 
-        // Set cache path if not set yet.
-        if ($this->myTwigEnvironment->getCache() === false) {
+        // Set cache path if not set.
+        if ($this->twigEnvironment->getCache() === false) {
             $cachePath = $application->getTempPath()->withFilePath(
                 FilePath::parse('bluemvc-twig' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR)
             );
 
-            $this->myTwigEnvironment->setCache($cachePath->__toString());
+            $this->twigEnvironment->setCache($cachePath->__toString());
         }
 
         // Create and render template.
-        $twigTemplate = $this->myTwigEnvironment->load($viewFile->__toString());
+        $twigTemplate = $this->twigEnvironment->load($viewFile->__toString());
 
         return $twigTemplate->render(
             [
@@ -111,16 +114,12 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @return self The Twig view renderer.
      */
-    public function setStrictVariables($isEnabled = true)
+    public function setStrictVariables(bool $isEnabled = true): self
     {
-        if (!is_bool($isEnabled)) {
-            throw new \InvalidArgumentException('$isEnabled parameter is not a boolean.');
-        }
-
         if ($isEnabled) {
-            $this->myTwigEnvironment->enableStrictVariables();
+            $this->twigEnvironment->enableStrictVariables();
         } else {
-            $this->myTwigEnvironment->disableStrictVariables();
+            $this->twigEnvironment->disableStrictVariables();
         }
 
         return $this;
@@ -129,10 +128,10 @@ class TwigViewRenderer extends AbstractViewRenderer
     /**
      * @var \Twig_Loader_Filesystem My Twig loader.
      */
-    private $myTwigLoader;
+    private $twigLoader;
 
     /**
      * @var \Twig_Environment My Twig environment.
      */
-    private $myTwigEnvironment;
+    private $twigEnvironment;
 }
