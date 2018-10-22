@@ -7,6 +7,7 @@ namespace BlueMvc\Twig\Tests;
 use BlueMvc\Core\Collections\ViewItemCollection;
 use BlueMvc\Fakes\FakeApplication;
 use BlueMvc\Fakes\FakeRequest;
+use BlueMvc\Twig\Tests\Helpers\TestExtensions\BarExtension;
 use BlueMvc\Twig\TwigViewRenderer;
 use DataTypes\FilePath;
 use PHPUnit\Framework\TestCase;
@@ -99,6 +100,30 @@ class TwigViewRendererTest extends TestCase
     }
 
     /**
+     * Test render a view using a custom Twig filter.
+     */
+    public function testRenderViewWithCustomTwigFilter()
+    {
+        $application = new FakeApplication();
+        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $viewRenderer = new TwigViewRenderer();
+
+        $twigEnvironment = $viewRenderer->getTwigEnvironment();
+        $twigEnvironment->addFilter(new \Twig_SimpleFilter('Foo', function ($s) {
+            return strtoupper($s);
+        }));
+
+        $result = $viewRenderer->renderView(
+            $application,
+            new FakeRequest(),
+            FilePath::parse('with-filter.twig'),
+            'Baz'
+        );
+
+        self::assertSame('<html><head><title></title></head><body><p>BAZ</p></body></html>', $result);
+    }
+
+    /**
      * Test render a view using a custom Twig extension.
      */
     public function testRenderViewWithCustomTwigExtension()
@@ -106,20 +131,16 @@ class TwigViewRendererTest extends TestCase
         $application = new FakeApplication();
         $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
         $viewRenderer = new TwigViewRenderer();
-
-        $twigEnvironment = $viewRenderer->getTwigEnvironment();
-        $twigEnvironment->addFilter(new \Twig_SimpleFilter('FooBar', function ($s) {
-            return strtoupper($s);
-        }));
+        $viewRenderer->addExtension(new BarExtension());
 
         $result = $viewRenderer->renderView(
             $application,
             new FakeRequest(),
-            FilePath::parse('extension.twig'),
+            FilePath::parse('with-extension.twig'),
             'Baz'
         );
 
-        self::assertSame('<html><head><title></title></head><body><p>BAZ</p></body></html>', $result);
+        self::assertSame('<html><head><title></title></head><body><p>baz</p></body></html>', $result);
     }
 
     /**

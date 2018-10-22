@@ -40,6 +40,18 @@ class TwigViewRenderer extends AbstractViewRenderer
     }
 
     /**
+     * Adds a Twig extension.
+     *
+     * @since 2.1.0
+     *
+     * @param \Twig_ExtensionInterface $extension The Twig extension.
+     */
+    public function addExtension(\Twig_ExtensionInterface $extension): void
+    {
+        $this->twigEnvironment->addExtension($extension);
+    }
+
+    /**
      * Returns the Twig environment.
      *
      * @since 1.0.0
@@ -66,7 +78,7 @@ class TwigViewRenderer extends AbstractViewRenderer
     /**
      * Renders the view.
      *
-     * @since    1.0.0
+     * @since 1.0.0
      *
      * @param ApplicationInterface             $application The application.
      * @param RequestInterface                 $request     The request.
