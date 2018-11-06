@@ -1,5 +1,6 @@
 ## Unreleased
 - Added addExtension method to TwigViewRenderer.
+- Added setDebug method to TwigViewRenderer.
 
 ## [2.0.0] - 2018-05-14
 - Updated PHP requirement to 7.1.

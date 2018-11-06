@@ -304,4 +304,24 @@ class TwigViewRendererTest extends TestCase
 
         self::assertSame('<html><head><title></title></head><body><p>Included from alternate directory</p></body></html>', $result);
     }
+
+    /**
+     * Test enable debug mode.
+     */
+    public function testEnableDebugMode()
+    {
+        $viewRenderer = (new TwigViewRenderer())->setDebug(true);
+
+        self::assertTrue($viewRenderer->getTwigEnvironment()->isDebug());
+    }
+
+    /**
+     * Test disable debug mode.
+     */
+    public function testDisableDebugMode()
+    {
+        $viewRenderer = (new TwigViewRenderer())->setDebug(false);
+
+        self::assertFalse($viewRenderer->getTwigEnvironment()->isDebug());
+    }
 }

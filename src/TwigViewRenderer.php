@@ -142,6 +142,26 @@ class TwigViewRenderer extends AbstractViewRenderer
     }
 
     /**
+     * Sets whether debug mode should be enabled.
+     *
+     * @since 2.1.0
+     *
+     * @param bool $isDebug True if debug mode should be enabled, false otherwise.
+     *
+     * @return self The Twig view renderer.
+     */
+    public function setDebug(bool $isDebug = false): self
+    {
+        if ($isDebug) {
+            $this->twigEnvironment->enableDebug();
+        } else {
+            $this->twigEnvironment->disableDebug();
+        }
+
+        return $this;
+    }
+
+    /**
      * @var \Twig_Loader_Filesystem My Twig loader.
      */
     private $twigLoader;
