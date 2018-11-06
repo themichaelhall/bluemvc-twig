@@ -150,7 +150,7 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @return self The Twig view renderer.
      */
-    public function setDebug(bool $isDebug = false): self
+    public function setDebug(bool $isDebug = true): self
     {
         if ($isDebug) {
             $this->twigEnvironment->enableDebug();
