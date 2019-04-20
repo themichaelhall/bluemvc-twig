@@ -11,6 +11,7 @@ use BlueMvc\Twig\Tests\Helpers\TestExtensions\BarExtension;
 use BlueMvc\Twig\TwigViewRenderer;
 use DataTypes\FilePath;
 use PHPUnit\Framework\TestCase;
+use Twig_SimpleFilter;
 
 /**
  * Test TwigViewRenderer class.
@@ -109,7 +110,7 @@ class TwigViewRendererTest extends TestCase
         $viewRenderer = new TwigViewRenderer();
 
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
-        $twigEnvironment->addFilter(new \Twig_SimpleFilter('Foo', function ($s) {
+        $twigEnvironment->addFilter(new Twig_SimpleFilter('Foo', function ($s) {
             return strtoupper($s);
         }));
 

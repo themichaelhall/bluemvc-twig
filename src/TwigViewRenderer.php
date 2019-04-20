@@ -14,6 +14,9 @@ use BlueMvc\Core\Interfaces\Collections\ViewItemCollectionInterface;
 use BlueMvc\Core\Interfaces\RequestInterface;
 use DataTypes\FilePath;
 use DataTypes\Interfaces\FilePathInterface;
+use Twig_Environment;
+use Twig_ExtensionInterface;
+use Twig_Loader_Filesystem;
 
 /**
  * Class representing a Twig view renderer.
@@ -33,8 +36,8 @@ class TwigViewRenderer extends AbstractViewRenderer
     {
         parent::__construct($viewFileExtension);
 
-        $this->twigLoader = new \Twig_Loader_Filesystem();
-        $this->twigEnvironment = new \Twig_Environment($this->twigLoader, [
+        $this->twigLoader = new Twig_Loader_Filesystem();
+        $this->twigEnvironment = new Twig_Environment($this->twigLoader, [
             'auto_reload' => true,
         ]);
     }
@@ -44,11 +47,11 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @since 2.1.0
      *
-     * @param \Twig_ExtensionInterface $extension The Twig extension.
+     * @param Twig_ExtensionInterface $extension The Twig extension.
      *
      * @return self The Twig view renderer.
      */
-    public function addExtension(\Twig_ExtensionInterface $extension): self
+    public function addExtension(Twig_ExtensionInterface $extension): self
     {
         $this->twigEnvironment->addExtension($extension);
 
@@ -60,9 +63,9 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @since 1.0.0
      *
-     * @return \Twig_Environment The Twig environment.
+     * @return Twig_Environment The Twig environment.
      */
-    public function getTwigEnvironment(): \Twig_Environment
+    public function getTwigEnvironment(): Twig_Environment
     {
         return $this->twigEnvironment;
     }
@@ -72,9 +75,9 @@ class TwigViewRenderer extends AbstractViewRenderer
      *
      * @since 1.0.0
      *
-     * @return \Twig_Loader_Filesystem The Twig loader.
+     * @return Twig_Loader_Filesystem The Twig loader.
      */
-    public function getTwigLoader(): \Twig_Loader_Filesystem
+    public function getTwigLoader(): Twig_Loader_Filesystem
     {
         return $this->twigLoader;
     }
@@ -162,12 +165,12 @@ class TwigViewRenderer extends AbstractViewRenderer
     }
 
     /**
-     * @var \Twig_Loader_Filesystem My Twig loader.
+     * @var Twig_Loader_Filesystem My Twig loader.
      */
     private $twigLoader;
 
     /**
-     * @var \Twig_Environment My Twig environment.
+     * @var Twig_Environment My Twig environment.
      */
     private $twigEnvironment;
 }

@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace BlueMvc\Twig\Tests\Helpers\TestExtensions;
 
+use Twig_Extension;
+use Twig_SimpleFilter;
+
 /**
  * Test extension that implements the filter "Bar".
  */
-class BarExtension extends \Twig_Extension
+class BarExtension extends Twig_Extension
 {
     /** @noinspection PhpMissingParentCallCommonInspection */
 
     /**
-     * @return \Twig_SimpleFilter[]
+     * @return Twig_SimpleFilter[]
      */
     public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('Bar', [$this, 'barFilter']),
+            new Twig_SimpleFilter('Bar', [$this, 'barFilter']),
         ];
     }
 
