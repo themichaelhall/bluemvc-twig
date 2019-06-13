@@ -36,10 +36,5 @@
     "psr-4": {
       "BlueMvc\\Twig\\Tests\\": "tests"
     }
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-develop": "2.1-dev"
-    }
   }
 }
