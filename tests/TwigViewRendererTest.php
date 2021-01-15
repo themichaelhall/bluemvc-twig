@@ -11,7 +11,9 @@ use BlueMvc\Twig\Tests\Helpers\TestExtensions\BarExtension;
 use BlueMvc\Twig\TwigViewRenderer;
 use DataTypes\FilePath;
 use PHPUnit\Framework\TestCase;
-use Twig_SimpleFilter;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
 
 /**
  * Test TwigViewRenderer class.
@@ -87,7 +89,7 @@ class TwigViewRendererTest extends TestCase
     {
         $viewRenderer = new TwigViewRenderer();
 
-        self::assertInstanceOf(\Twig_Loader_Filesystem::class, $viewRenderer->getTwigLoader());
+        self::assertInstanceOf(FilesystemLoader::class, $viewRenderer->getTwigLoader());
     }
 
     /**
@@ -97,7 +99,7 @@ class TwigViewRendererTest extends TestCase
     {
         $viewRenderer = new TwigViewRenderer();
 
-        self::assertInstanceOf(\Twig_Environment::class, $viewRenderer->getTwigEnvironment());
+        self::assertInstanceOf(Environment::class, $viewRenderer->getTwigEnvironment());
     }
 
     /**
@@ -110,7 +112,7 @@ class TwigViewRendererTest extends TestCase
         $viewRenderer = new TwigViewRenderer();
 
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
-        $twigEnvironment->addFilter(new Twig_SimpleFilter('Foo', function ($s) {
+        $twigEnvironment->addFilter(new TwigFilter('Foo', function ($s) {
             return strtoupper($s);
         }));
 

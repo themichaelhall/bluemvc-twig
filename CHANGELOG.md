@@ -1,4 +1,5 @@
 ## Unreleased
+- Updated to use non-deprecated Twig classes.
 
 ## [2.1.0] - 2019-06-13
 - Added addExtension method to TwigViewRenderer.
