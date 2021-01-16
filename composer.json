@@ -21,7 +21,7 @@
     "php": ">=7.1",
     "datatypes/datatypes": "^1.0||^2.0",
     "bluemvc/bluemvc-core": "^2.0",
-    "twig/twig": "^1.28||^2.0"
+    "twig/twig": "^1.38||^2.0"
   },
   "require-dev": {
     "bluemvc/bluemvc-fakes": "^2.0",
