@@ -1,5 +1,6 @@
 ## Unreleased
 - Updated to use non-deprecated Twig classes.
+- Changed required PHP version to >= 7.3.
 
 ## [2.1.0] - 2019-06-13
 - Added addExtension method to TwigViewRenderer.

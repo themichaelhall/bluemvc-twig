@@ -16,7 +16,7 @@ Twig view renderer for the [BlueMvc PHP framework](https://github.com/themichael
 
 ## Requirements
 
-- PHP >= 7.1
+- PHP >= 7.3
 
 ## Install with Composer
 
