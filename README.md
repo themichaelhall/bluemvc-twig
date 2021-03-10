@@ -4,6 +4,7 @@
 
 # BlueMvc Twig
 
+[![Tests](https://github.com/themichaelhall/bluemvc-twig/workflows/tests/badge.svg?branch=master)](https://github.com/themichaelhall/bluemvc-twig/actions)
 [![codecov.io](https://codecov.io/gh/themichaelhall/bluemvc-twig/coverage.svg?branch=master)](https://codecov.io/gh/themichaelhall/bluemvc-twig?branch=master)
 [![StyleCI](https://styleci.io/repos/68233714/shield?style=flat)](https://styleci.io/repos/68233714)
 [![License](https://poser.pugx.org/bluemvc/bluemvc-twig/license)](https://packagist.org/packages/bluemvc/bluemvc-twig)
