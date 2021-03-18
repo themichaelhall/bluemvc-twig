@@ -34,7 +34,7 @@ class TwigViewRendererTest extends TestCase
             FilePath::parse('basic.twig')
         );
 
-        self::assertSame('<html><head><title></title></head><body><h1></h1><p></p><p>http://localhost/foo</p><p>' . $application->getViewPath() . '</p></body></html>', $result);
+        self::assertSame('<html><head><title></title></head><body><h1></h1><p></p><p>http://localhost/foo</p><p>' . $application->getViewPath() . "</p></body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -55,7 +55,7 @@ class TwigViewRendererTest extends TestCase
             ]
         );
 
-        self::assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/bar</p><p>' . $application->getViewPath() . '</p></body></html>', $result);
+        self::assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/bar</p><p>' . $application->getViewPath() . "</p></body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -79,7 +79,7 @@ class TwigViewRendererTest extends TestCase
             $viewItems
         );
 
-        self::assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/</p><p>' . $application->getViewPath() . '</p></body></html>', $result);
+        self::assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/</p><p>' . $application->getViewPath() . "</p></body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -123,7 +123,7 @@ class TwigViewRendererTest extends TestCase
             'Baz'
         );
 
-        self::assertSame('<html><head><title></title></head><body><p>BAZ</p></body></html>', $result);
+        self::assertSame("<html><head><title></title></head><body><p>BAZ</p></body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -143,7 +143,7 @@ class TwigViewRendererTest extends TestCase
             'Baz'
         );
 
-        self::assertSame('<html><head><title></title></head><body><p>baz</p></body></html>', $result);
+        self::assertSame("<html><head><title></title></head><body><p>baz</p></body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -281,7 +281,7 @@ class TwigViewRendererTest extends TestCase
             FilePath::parse('with-include.twig')
         );
 
-        self::assertSame('<html><head><title></title></head><body><p>Included from base directory</p></body></html>', $result);
+        self::assertSame("<html><head><title></title></head><body><p>Included from base directory</p>\n</body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -305,7 +305,7 @@ class TwigViewRendererTest extends TestCase
             FilePath::parse('with-include.twig')
         );
 
-        self::assertSame('<html><head><title></title></head><body><p>Included from alternate directory</p></body></html>', $result);
+        self::assertSame("<html><head><title></title></head><body><p>Included from alternate directory</p>\n</body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -326,5 +326,17 @@ class TwigViewRendererTest extends TestCase
         $viewRenderer = (new TwigViewRenderer())->setDebug(false);
 
         self::assertFalse($viewRenderer->getTwigEnvironment()->isDebug());
+    }
+
+    /**
+     * Normalizes the end of line character(s) to \n, so tests will pass, event if the newline(s) in tests files are converted, e.g. by Git.
+     *
+     * @param string $s
+     *
+     * @return string
+     */
+    private static function normalizeEndOfLine(string $s): string
+    {
+        return str_replace("\r\n", "\n", $s);
     }
 }
