@@ -1,9 +1,11 @@
 <?php
+
 /**
  * This file is a part of the bluemvc-twig package.
  *
  * Read more at https://bluemvc.com/
  */
+
 declare(strict_types=1);
 
 namespace BlueMvc\Twig;
