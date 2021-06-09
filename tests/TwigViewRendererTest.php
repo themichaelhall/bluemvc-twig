@@ -9,7 +9,7 @@ use BlueMvc\Fakes\FakeApplication;
 use BlueMvc\Fakes\FakeRequest;
 use BlueMvc\Twig\Tests\Helpers\TestExtensions\BarExtension;
 use BlueMvc\Twig\TwigViewRenderer;
-use DataTypes\FilePath;
+use DataTypes\System\FilePath;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -26,7 +26,7 @@ class TwigViewRendererTest extends TestCase
     public function testRenderViewWithEmptyModel()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $result = $viewRenderer->renderView(
             $application,
@@ -43,7 +43,7 @@ class TwigViewRendererTest extends TestCase
     public function testRenderViewWithModel()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $result = $viewRenderer->renderView(
             $application,
@@ -64,7 +64,7 @@ class TwigViewRendererTest extends TestCase
     public function testRenderViewWithModelAndViewData()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $viewItems = new ViewItemCollection();
         $viewItems->set('Title', 'The title');
@@ -108,7 +108,7 @@ class TwigViewRendererTest extends TestCase
     public function testRenderViewWithCustomTwigFilter()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
 
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
@@ -132,7 +132,7 @@ class TwigViewRendererTest extends TestCase
     public function testRenderViewWithCustomTwigExtension()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $viewRenderer->addExtension(new BarExtension());
 
@@ -152,7 +152,7 @@ class TwigViewRendererTest extends TestCase
     public function testGetTwigCacheDirectory()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
 
@@ -171,7 +171,7 @@ class TwigViewRendererTest extends TestCase
     public function testExistingTwigCacheDirectoryDoesNotChangeAfterViewRendering()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
         $twigEnvironment->setCache(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'twig-test' . DIRECTORY_SEPARATOR);
@@ -231,7 +231,7 @@ class TwigViewRendererTest extends TestCase
     public function testPathsAreSetByDefault()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $viewRenderer->renderView(
             $application,
@@ -248,7 +248,7 @@ class TwigViewRendererTest extends TestCase
     public function testPathsAreNotChangedIfSet()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $viewRenderer->getTwigLoader()->setPaths(
             [
@@ -272,7 +272,7 @@ class TwigViewRendererTest extends TestCase
     public function testRenderViewWithIncludedFileFromBaseDirectory()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
 
         $result = $viewRenderer->renderView(
@@ -290,7 +290,7 @@ class TwigViewRendererTest extends TestCase
     public function testRenderViewWithIncludedFileFromAlternateDirectory()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parse(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR));
+        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
         $viewRenderer = new TwigViewRenderer();
         $viewRenderer->getTwigLoader()->setPaths(
             [
