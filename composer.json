@@ -20,7 +20,7 @@
   "require": {
     "php": ">=7.3",
     "datatypes/datatypes": "^2.4@dev",
-    "bluemvc/bluemvc-core": "^2.0",
+    "bluemvc/bluemvc-core": "^2.2@dev",
     "twig/twig": "^1.43||^2.0"
   },
   "require-dev": {
