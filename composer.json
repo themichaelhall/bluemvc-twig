@@ -1,6 +1,6 @@
 {
   "name": "bluemvc/bluemvc-twig",
-  "description": "Twig view renderer for the BlueMvc PHP framework",
+  "description": "Twig content rendering for the BlueMvc PHP framework",
   "homepage": "https://bluemvc.com/",
   "license": "MIT",
   "type": "library",

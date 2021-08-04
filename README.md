@@ -10,7 +10,7 @@
 [![Latest Stable Version](https://poser.pugx.org/bluemvc/bluemvc-twig/v/stable)](https://packagist.org/packages/bluemvc/bluemvc-twig)
 [![Total Downloads](https://poser.pugx.org/bluemvc/bluemvc-twig/downloads)](https://packagist.org/packages/bluemvc/bluemvc-twig)
 
-Twig view renderer for the [BlueMvc PHP framework](https://github.com/themichaelhall/bluemvc).
+Twig content rendering for the [BlueMvc PHP framework](https://github.com/themichaelhall/bluemvc).
 
 ## Requirements
 
