@@ -166,7 +166,7 @@ class TwigViewRendererTest extends TestCase
     }
 
     /**
-     * Test that the an existing Twig cache directory does not change after View rendering.
+     * Test that the existing Twig cache directory does not change after View rendering.
      */
     public function testExistingTwigCacheDirectoryDoesNotChangeAfterViewRendering()
     {
