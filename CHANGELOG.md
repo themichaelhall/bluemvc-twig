@@ -1,3 +1,5 @@
+## Unreleased
+
 ## [2.2.0] - 2021-09-02
 - Updated to use non-deprecated Twig classes.
 - Changed required PHP version to >= 7.3.
