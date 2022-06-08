@@ -167,12 +167,12 @@ class TwigViewRenderer extends AbstractViewRenderer
     }
 
     /**
-     * @var FilesystemLoader My Twig loader.
+     * @var FilesystemLoader The Twig loader.
      */
-    private $twigLoader;
+    private FilesystemLoader $twigLoader;
 
     /**
-     * @var Environment My Twig environment.
+     * @var Environment The Twig environment.
      */
-    private $twigEnvironment;
+    private Environment $twigEnvironment;
 }
