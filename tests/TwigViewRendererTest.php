@@ -34,7 +34,7 @@ class TwigViewRendererTest extends TestCase
             FilePath::parse('basic.twig')
         );
 
-        self::assertSame('<html><head><title></title></head><body><h1></h1><p></p><p>http://localhost/foo</p><p>' . $application->getViewPath() . "</p></body></html>\n", self::normalizeEndOfLine($result));
+        self::assertSame('<html><head><title></title></head><body><h1></h1><p></p><p>http://localhost/foo</p><p>' . $application->getViewPaths()[0] . "</p></body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -55,7 +55,7 @@ class TwigViewRendererTest extends TestCase
             ]
         );
 
-        self::assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/bar</p><p>' . $application->getViewPath() . "</p></body></html>\n", self::normalizeEndOfLine($result));
+        self::assertSame('<html><head><title></title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/bar</p><p>' . $application->getViewPaths()[0] . "</p></body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -79,7 +79,7 @@ class TwigViewRendererTest extends TestCase
             $viewItems
         );
 
-        self::assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/</p><p>' . $application->getViewPath() . "</p></body></html>\n", self::normalizeEndOfLine($result));
+        self::assertSame('<html><head><title>The title</title></head><body><h1>The header</h1><p>The content</p><p>http://localhost/</p><p>' . $application->getViewPaths()[0] . "</p></body></html>\n", self::normalizeEndOfLine($result));
     }
 
     /**
@@ -112,9 +112,11 @@ class TwigViewRendererTest extends TestCase
         $viewRenderer = new TwigViewRenderer();
 
         $twigEnvironment = $viewRenderer->getTwigEnvironment();
-        $twigEnvironment->addFilter(new TwigFilter('Foo', function ($s) {
-            return strtoupper($s);
-        }));
+        $twigEnvironment->addFilter(
+            new TwigFilter('Foo', function ($s) {
+                return strtoupper($s);
+            })
+        );
 
         $result = $viewRenderer->renderView(
             $application,
@@ -290,14 +292,13 @@ class TwigViewRendererTest extends TestCase
     public function testRenderViewWithIncludedFileFromAlternateDirectory()
     {
         $application = new FakeApplication();
-        $application->setViewPath(FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'));
-        $viewRenderer = new TwigViewRenderer();
-        $viewRenderer->getTwigLoader()->setPaths(
+        $application->setViewPaths(
             [
-                __DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViewsAlternate' . DIRECTORY_SEPARATOR,
-                __DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews' . DIRECTORY_SEPARATOR,
+                FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViewsAlternate'),
+                FilePath::parseAsDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'Helpers' . DIRECTORY_SEPARATOR . 'TestViews'),
             ]
         );
+        $viewRenderer = new TwigViewRenderer();
 
         $result = $viewRenderer->renderView(
             $application,

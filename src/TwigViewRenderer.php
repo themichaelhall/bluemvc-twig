@@ -101,7 +101,14 @@ class TwigViewRenderer extends AbstractViewRenderer
     {
         // Set views directory path if not set.
         if ($this->twigLoader->getPaths() === []) {
-            $this->twigLoader->setPaths($application->getViewPath()->__toString());
+            $this->twigLoader->setPaths(
+                array_map(
+                    function (FilePathInterface $path): string {
+                        return $path->__toString();
+                    },
+                    $application->getViewPaths()
+                )
+            );
         }
 
         // Set cache path if not set.
