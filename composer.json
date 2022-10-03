@@ -20,11 +20,11 @@
   "require": {
     "php": ">=8.0",
     "datatypes/datatypes": "^3.0",
-    "bluemvc/bluemvc-core": "^3.0@dev",
+    "bluemvc/bluemvc-core": "^3.0",
     "twig/twig": "^3.0"
   },
   "require-dev": {
-    "bluemvc/bluemvc-fakes": "^3.0@dev",
+    "bluemvc/bluemvc-fakes": "^3.0",
     "phpunit/phpunit": "^9.0"
   },
   "autoload": {
